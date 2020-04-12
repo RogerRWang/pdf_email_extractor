@@ -21,9 +21,9 @@ def main():
     print('#############################################')
     with open('results.tsv', 'w', newline='') as out_file:
         tsv_writer = csv.writer(out_file, delimiter='\t')
-        tsv_writer.writerow(['PaperID', 'Emails'])
+        tsv_writer.writerow(['PaperID', 'Emails', 'Link'])
         for id, researchPaperDatum in researchPaperData.items():
-            tsv_writer.writerow([id, researchPaperDatum['emails']])
+            tsv_writer.writerow([id, researchPaperDatum['emails'], researchPaperDatum['finalURL']])
     print('Results written to results.tsv')
 
 
@@ -42,14 +42,14 @@ def getDataForProvidedTSV(inputTSVFileName):
                 # column 0 is the ID of the research paper
                 researchPaperData[row[0]] = {
                     'initialURL': row[2],
-                    'finalURL': '',
+                    'finalURL': row[2],
                     'downloadedPDFPath': '',
                     'emails': []
                 }
 
     # Map research paper ID and the downloaded PDF paths
     for id,datum in researchPaperData.items():
-        # if id == 'dn9nlcgs':
+        # if id == '6yinwbfh':
         print('--------------------------------------------')
         print('For research paper ID: ' + id)
 
