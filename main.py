@@ -9,6 +9,7 @@ import urllib
 
 GENERIC_EMAIL_REGEX = '([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]{0,3})'
 ROOT_PDFS_PATH = 'pdfs/'
+COMMON_FILE_EXTENSIONS = ['png', 'jpe', 'jpg', 'img']
 
 def main():
 
@@ -18,7 +19,7 @@ def main():
 
     # Print our results
     print('#############################################')
-    with open('results.tsv', 'wt') as out_file:
+    with open('results.tsv', 'w', newline='') as out_file:
         tsv_writer = csv.writer(out_file, delimiter='\t')
         tsv_writer.writerow(['PaperID', 'Emails'])
         for id, researchPaperDatum in researchPaperData.items():
@@ -48,7 +49,7 @@ def getDataForProvidedTSV(inputTSVFileName):
 
     # Map research paper ID and the downloaded PDF paths
     for id,datum in researchPaperData.items():
-        # if id == 'ljzmei78':
+        # if id == 'dn9nlcgs':
         print('--------------------------------------------')
         print('For research paper ID: ' + id)
 
@@ -110,14 +111,13 @@ def getDataForProvidedTSV(inputTSVFileName):
                     else:
                         print('Could not find PDF to be downloaded from webpage')
 
-                    if not datum['emails']:
-                        datum['emails'] = 'Could not find a PDF or emails'
-
                 # Make list of emails unique after we've tried extracting from everywhere
                 datum['emails'] = makeListUnique(datum['emails'])
+                # Remove any results that matched the regex, but we can selectively remove due to knowing they aren't email addresses
+                datum['emails'] = removeEdgeCases(datum['emails'])
         else:
             print('No final URL')
-            datum['emails'] = 'Could not find a PDF or emails'
+            datum['emails'] = []
 
     return researchPaperData
 
@@ -166,6 +166,26 @@ def combineListsRemoveDuplicates(l1, l2):
 
 def makeListUnique(l):
     return list(dict.fromkeys(l))
+
+def removeEdgeCases(emails):
+    emails = [email for email in emails if not isFile(email)]
+    emails = [email for email in emails if not lastCharIsNumeric(email)]
+    return emails
+
+def isFile(email):
+    isFile = False
+    for extension in COMMON_FILE_EXTENSIONS:
+        if email.endswith(extension):
+            isFile = True
+            break
+
+    return isFile
+
+def lastCharIsNumeric(email):
+    if email[-1].isnumeric():
+        return True
+    else:
+        return False
 
 def downloadPDFFromWebpage(pdfURL, datum, pdfFilePath, newWebpageBaseURL):
     potentialFullURL = newWebpageBaseURL + pdfURL
