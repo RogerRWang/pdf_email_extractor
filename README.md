@@ -3,6 +3,7 @@ Extract author emails from COVID-19 research papers stored in a variety of onlin
 Essentially just web crawls the provided links and tries to grab the author email from the page itself, or if it is not on the page, tries to find a download link for the pdf, and then parses the pdf to find the author email.
 
 # Setup
+0) Clone this repo: `git clone https://github.com/RogerRWang/pdf_email_extractor.git`
 1) Make sure you have python installed: https://www.python.org/downloads/
 2) Make sure you have pip installed (it should automatically come with python)
 3) We need a few packages:
