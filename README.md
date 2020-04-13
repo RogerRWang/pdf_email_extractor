@@ -3,10 +3,10 @@ Extract author emails from COVID-19 research papers stored in a variety of onlin
 Essentially just web crawls the provided links and tries to grab the author email from the page itself, or if it is not on the page, tries to find a download link for the pdf, and then parses the pdf to find the author email.
 
 # Usage
-$python main.py -i \<input tsv file\> -o \<output tsv file\>
+$ python main.py -i \<input tsv file\> -o \<output tsv file\>
 <br><br>
 <b>Example:</b><br>
-$python main.py -i part_91_papers_havelink.tsv -o results.tsv
+$ python main.py -i part_91_papers_havelink.tsv -o results.tsv
 
 
 # Input data format
