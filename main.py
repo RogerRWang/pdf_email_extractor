@@ -1,3 +1,4 @@
+import sys, getopt
 import csv
 import requests
 import re
@@ -11,15 +12,32 @@ GENERIC_EMAIL_REGEX = '([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]{0,3})'
 ROOT_PDFS_PATH = 'pdfs/'
 COMMON_FILE_EXTENSIONS = ['png', 'jpe', 'jpg', 'img']
 
-def main():
+def main(argv):
 
-    inputTSVFileName = 'part_91_papers_havelink.tsv'
+    inputfile = ''
+    outputfile = ''
+    try:
+        opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+    except getopt.GetoptError:
+        print('usage: main.py -i <inputfile> -o <outputfile>')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print('usage: main.py -i <inputfile> -o <outputfile>')
+            sys.exit()
+        elif opt in ("-i", "--ifile"):
+            inputfile = arg
+        elif opt in ("-o", "--ofile"):
+            outputfile = arg
+    print('Input file is "', inputfile)
+    print('Output file is "', outputfile)
+
     # Download PDFs
-    researchPaperData = getDataForProvidedTSV(inputTSVFileName)
+    researchPaperData = getDataForProvidedTSV(inputfile)
 
     # Print our results
     print('#############################################')
-    with open('results.tsv', 'w', newline='') as out_file:
+    with open(outputfile, 'w', newline='') as out_file:
         tsv_writer = csv.writer(out_file, delimiter='\t')
         tsv_writer.writerow(['PaperID', 'Emails', 'Link'])
         for id, researchPaperDatum in researchPaperData.items():
@@ -291,4 +309,4 @@ def find_emails(str):
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
