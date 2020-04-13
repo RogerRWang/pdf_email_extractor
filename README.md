@@ -33,7 +33,7 @@ Input must be a TSV (tab separated value) file with the below format (without th
 |------|-------------|-----------------|-------------|
 | 3xyz |             |  https://doi.org/10.1016/j.jinf.2020.03.021 |  COVID-19 CURE!!!    |
 
-<b>Example:</b><br>
+<b>Example:</b> (Also included example input in this repo: part_91_papers_havelink.tsv)<br>
 ```
 3xyz    https://doi.org/10.1016/j.jinf.2020.03.021  COVID-19 CURE!!!
 5lizk somefiller  https://doi.org/10.1016/s1473-3099(20)30176-6 COVID-19 SUCKS
@@ -46,7 +46,7 @@ The output will output a similar TSV file to the file you specify when running t
 |------|-------------|-----------------|
 | 3xyz | \[fauci@nhi.gov, zebra@qq.com, elephant@umich.edu\]            |  https://doi.org/10.1016/j.jinf.2020.03.021 |
 
-<b>Example:</b><br>
+<b>Example:</b> (Also included example out in this repo: results.tsv)<br>
 ```
 PaperID	Emails	Link
 2ioap802	['shihuanzhong@sina.com', 'pengpengwg@126.com', 'ricusunbing@126.com']	https://journal.chestnet.org/retrieve/pii/S0012369220305584
