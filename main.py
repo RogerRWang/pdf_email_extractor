@@ -124,7 +124,7 @@ def getDataForProvidedTSV(inputTSVFileName):
                     newSplitWebpageURL = urllib.parse.urlparse(response.url);
                     newWebpageBaseURL = newSplitWebpageURL.scheme + '://' + newSplitWebpageURL.netloc
                     print('New webpage base url: ' + newWebpageBaseURL)
-                    pdfFilePath = scrapePDFDownloadButtonFromWebpage(response.content, datum, pdfFilePath, newWebpageBaseURL)
+                    pdfFilePath = scrapePDFDownloadButtonFromWebpageAndDownload(response.content, datum, pdfFilePath, newWebpageBaseURL)
                     if pdfFilePath:
                         emails = parse_pdf(pdfFilePath)
                         #combine emails from webpage and PDF
@@ -149,7 +149,7 @@ def scrapeEmailsFromWebpage(webpageContent, datum):
     emails = find_emails(soupString)
     return emails
 
-def scrapePDFDownloadButtonFromWebpage(webpageContent, datum, pdfFilePath, newWebpageBaseURL):
+def scrapePDFDownloadButtonFromWebpageAndDownload(webpageContent, datum, pdfFilePath, newWebpageBaseURL):
     soup = BeautifulSoup(webpageContent, 'lxml')
     linksOnPage = soup.find_all('a')
     potentialPDFLinks = []
@@ -239,8 +239,9 @@ def downloadPDFFromWebpage(pdfURL, datum, pdfFilePath, newWebpageBaseURL):
                         f.write(response.content)
                         f.close()
                     return True
-                else:
-                    return False
+
+    # If we looped through all potential URLs and none of them were PDFs, return false
+    return False
 
 def getMetaRefreshRedirectfinalURL(initialURL):
     try:
