@@ -1,13 +1,31 @@
-# pdf_email_extractor
+# Summary
 Extract author emails from COVID-19 research papers stored in a variety of online repositories
 Essentially just web crawls the provided links and tries to grab the author email from the page itself, or if it is not on the page, tries to find a download link for the pdf, and then parses the pdf to find the author email.
 
-# Usage
-$ python main.py -i \<input tsv file\> -o \<output tsv file\>
-<br><br>
-<b>Example:</b><br>
-$ python main.py -i part_91_papers_havelink.tsv -o results.tsv
+# Setup
+1) Make sure you have python installed: https://www.python.org/downloads/
+2) Make sure you have pip installed (it should automatically come with python)
+3) We need a few packages:
+```
+$ pip install requests
+$ pip install beautifulsoup4
+$ pip install textract
+```
 
+# Usage
+<b>Format:</b><br>
+```
+$ python main.py -i <input_tsv_file> -o <output_tsv_file>
+```
+<b>Example:</b><br>
+```
+$ python main.py -i part_91_papers_havelink.tsv -o results.tsv
+```
+You can also use the -h option to show the usage format:
+```
+$ python main.py -h
+usage: main.py -i <inputfile> -o <outputfile>
+```
 
 # Input data format
 Input must be a TSV (tab separated value) file with the below format (without the actual header!):<br>
@@ -35,3 +53,10 @@ PaperID	Emails	Link
 hsxwz798	['hong-jiang@whu.edu.cn']	http://www.journalofinfection.com/retrieve/pii/S0163445320301468
 lz2oqqin	['maxiancang@163.com', 'yadan_wang@hust.edu.com', 'zb_bob@stu.xjtu.edu.cn.']	http://www.journalofinfection.com/retrieve/pii/S0163445320301493
 ```
+
+# Additional Notes
+Running this code will create a `pdfs` folder in the directory to store any PDFs that are downloaded as part of the script. This will make subsequent runs a little faster since it won't have to download the PDF again.
+
+The requests package lets us deal with HTTP requests, responses, redirects, etc in a super easy way.
+The beautifulsoup4 package lets us do a lot of web crawling stuff easily.
+The textract package is what we use to parse the PDFs in a robust way and find the emails.
