@@ -3,7 +3,6 @@ import csv
 import requests
 import re
 from bs4 import BeautifulSoup
-import PyPDF2
 import textract
 import os
 import urllib
@@ -31,6 +30,10 @@ def main(argv):
             outputfile = arg
     print('Input file is "', inputfile)
     print('Output file is "', outputfile)
+
+    # Create pdfs directory to store any PDFs we need to download if it doesn't exist already
+    if not os.path.isdir('pdfs'):
+        os.mkdir('pdfs')
 
     # Download PDFs
     researchPaperData = getDataForProvidedTSV(inputfile)
